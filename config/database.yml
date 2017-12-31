@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  database: queertangocollective_dev
+
+test:
+  <<: *default
+  database: queertangocollective_test
+
+production:
+  <<: *default
+  database: queertangocollective
+  username: tanguera
+  password: <%= ENV['PG_PASSWORD'] %>
