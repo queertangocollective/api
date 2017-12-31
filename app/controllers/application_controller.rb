@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
 
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-  before_filter :current_user
+  before_action :current_user
 
   def context
     {
