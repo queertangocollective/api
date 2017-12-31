@@ -19,7 +19,7 @@ class CreateModels < ActiveRecord::Migration[5.1]
       t.text   :biography
       t.text   :website
       t.string :role
-      t.boolean :public, default: false, index: true
+      t.boolean :published, default: false, index: true
 
       t.timestamps
     end
@@ -93,7 +93,7 @@ class CreateModels < ActiveRecord::Migration[5.1]
       t.belongs_to :group, index: true
       t.belongs_to :person, index: true
       t.belongs_to :event, index: true
-      t.belongs_to :transaction, index: true
+      t.belongs_to :purchase, index: true
       t.belongs_to :ticket, index: true
 
       t.boolean :attended

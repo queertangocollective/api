@@ -11,8 +11,6 @@ class Group < ApplicationRecord
 
   before_create :generate_api_key
 
-  def teachers
-
   def generate_api_key
     begin
       self.api_key = SecureRandom.hex

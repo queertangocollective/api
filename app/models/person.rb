@@ -8,7 +8,7 @@ class Person < ApplicationRecord
   has_many :authorizations, dependent: :destroy
   has_many :authorization_sessions, through: :authorizations
 
-  scope :public, -> { where(public: true) }
+  scope :published, -> { where(published: true) }
 
   def staff?
     role == 'staff'

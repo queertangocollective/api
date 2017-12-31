@@ -1,5 +1,5 @@
 class PostResource < ApplicationResource
-  attributes :title, :body, :published, :published_at :slug, :pinned
+  attributes :title, :body, :published, :published_at, :slug, :pinned
 
   before_create do
     @model.group = context[:group]
