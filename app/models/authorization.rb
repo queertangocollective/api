@@ -11,9 +11,6 @@ class Authorization < ApplicationRecord
     old_current, new_current = self.current_sign_in_ip, request.remote_ip
     self.last_sign_in_ip     = old_current || new_current
     self.current_sign_in_ip  = new_current
-
-    self.sign_in_count ||= 0
-    self.sign_in_count += 1
   end
 
   def self.from_oauth(auth)
@@ -24,7 +21,6 @@ class Authorization < ApplicationRecord
       if authorization
         authorization.provider = auth[:provider]
         authorization.uid = auth[:uid]
-        authorization.name = auth[:name]
         authorization.email = auth[:email]
         authorization.avatar = auth[:image]
         authorization.save
