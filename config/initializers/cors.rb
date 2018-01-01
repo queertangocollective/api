@@ -8,7 +8,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins do |source, env|
-      Group.where('hostname ~* ?', "^#{source}").exists?
+      Rails.env.development? || Group.where('hostname ~* ?', "^#{source}").exists?
     end
     resource '*',
       headers: :any,
