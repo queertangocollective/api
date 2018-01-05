@@ -1,5 +1,5 @@
 class PersonResource < ApplicationResource
-  attributes :email, :name, :biography, :website, :role
+  attributes :email, :name, :biography, :website, :role, :published
 
   has_one :group
   has_many :photos
@@ -11,7 +11,7 @@ class PersonResource < ApplicationResource
   # Prevent fetching email addresses of people
   # that do aren't staff
   def fetchable_fields
-    if options[:context][:current_user].try(:staff?)
+    if context[:current_user].try(:staff?)
       super
     else
       super - [:email]
@@ -19,7 +19,7 @@ class PersonResource < ApplicationResource
   end
 
   def self.updatable_fields(context)
-    if options[:context][:current_user].try(:staff?)
+    if context[:current_user].try(:staff?)
       super
     else
       super - [:email]
@@ -27,7 +27,7 @@ class PersonResource < ApplicationResource
   end
 
   def self.creatable_fields(context)
-    if options[:context][:current_user].try(:staff?)
+    if context[:current_user].try(:staff?)
       super
     else
       super - [:email]
@@ -38,7 +38,7 @@ class PersonResource < ApplicationResource
     if options[:context][:current_user].try(:staff?)
       options[:context][:group].people
     else
-      options[:context][:group].people.public
+      options[:context][:group].people.published
     end
   end
 end

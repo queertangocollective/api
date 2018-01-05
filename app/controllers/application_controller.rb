@@ -20,7 +20,7 @@ class ApplicationController < ActionController::API
 
   def current_user
     return @current_user if @current_user
-    @current_user = @current_authorization.try(:person)
+    @current_user = current_authorization.try(:person)
   end
 
   def group

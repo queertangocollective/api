@@ -5,6 +5,8 @@ class PostResource < ApplicationResource
     @model.group = context[:group]
   end
 
+  filter :pinned, :published, :slug
+
   def self.records(options={})
     context = options[:context]
     posts = context[:group].posts

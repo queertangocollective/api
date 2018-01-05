@@ -1,5 +1,5 @@
 class GroupResource < ApplicationResource
-  attributes :name, :email, :hostname, :api_key
+  attributes :name, :email, :hostname, :api_key, :timezone, :locale
 
   has_many :events
   has_many :transactions

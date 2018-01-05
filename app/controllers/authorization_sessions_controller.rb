@@ -24,6 +24,7 @@ class AuthorizationSessionsController < ApplicationController
                  type: 'authorization-session',
                  attributes: {
                    'person-id': authorization.person_id,
+                   'authorization-id': authorization.id,
                    'access-token': token
                  }
                }
@@ -35,12 +36,14 @@ class AuthorizationSessionsController < ApplicationController
 
   def index
     session = AuthorizationSession.find_by_session_id(request.headers['Access-Token'])
+
     if session
       render json: {
                data: {
                  type: 'authorization-session',
                  attributes: {
                    'person-id': session.authorization.person_id,
+                   'authorization-id': session.authorization_id,
                    'access-token': session.session_id
                  }
                }
