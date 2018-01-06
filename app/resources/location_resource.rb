@@ -2,7 +2,7 @@ class LocationResource < ApplicationResource
   attributes :name, :website, :address_line, :extended_address,
              :city, :region_code, :postal_code, :latitude, :longitude
 
-  has_one :photo, always_include_linkage_data: true
+  has_one :photo
 
   filter :address_line, :city, :region_code
 

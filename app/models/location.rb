@@ -2,7 +2,7 @@ class Location < ApplicationRecord
   include PgSearch
 
   belongs_to :group
-  belongs_to :photo, dependent: :destroy
+  belongs_to :photo, optional: true, dependent: :destroy
 
   before_save :geolocate
 
