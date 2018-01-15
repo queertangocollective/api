@@ -24,15 +24,16 @@ class ApplicationController < ActionController::API
   end
 
   def group
+    return @group if @group && api_key
     Group.find_by_api_key(api_key)
   end
 
   def api_key
-    request.headers['ApiKey'] || request.headers['Api-Key']
+    Digest::SHA2.new(512).hexdigest(request.headers['ApiKey'] || request.headers['Api-Key'] || '')
   end
 
   def access_token
-    request.headers['AccessToken'] || request.headers['Access-Token']
+    Digest::SHA2.new(512).hexdigest(request.headers['AccessToken'] || request.headers['Access-Token'] || '')
   end
 
   def authorize

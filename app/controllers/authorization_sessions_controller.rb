@@ -17,12 +17,13 @@ class AuthorizationSessionsController < ApplicationController
     if authorization
       token = SecureRandom.uuid
       authorization.update_tracked_fields(request)
-      authorization.authorization_sessions.create(session_id: token)
+      session = authorization.authorization_sessions.create(session_id: Digest::SHA2.new(512).hexdigest(token))
 
       render json: {
                data: {
                  type: 'authorization-session',
                  attributes: {
+                   'id': session.id,
                    'person-id': authorization.person_id,
                    'authorization-id': authorization.id,
                    'access-token': token
@@ -35,16 +36,18 @@ class AuthorizationSessionsController < ApplicationController
   end
 
   def index
-    session = AuthorizationSession.find_by_session_id(request.headers['Access-Token'])
+    token = request.headers['Access-Token']
+    session = AuthorizationSession.find_by_session_id(Digest::SHA2.new(512).hexdigest(token))
 
     if session
       render json: {
                data: {
                  type: 'authorization-session',
                  attributes: {
+                   'id': session.id,
                    'person-id': session.authorization.person_id,
                    'authorization-id': session.authorization_id,
-                   'access-token': session.session_id
+                   'access-token': token
                  }
                }
              }

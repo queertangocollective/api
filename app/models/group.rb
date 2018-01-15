@@ -9,11 +9,9 @@ class Group < ApplicationRecord
   has_many :tickets
   has_many :ticket_stubs
 
-  before_create :generate_api_key
-
   def generate_api_key
-    begin
-      self.api_key = SecureRandom.hex
-    end while self.class.exists?(api_key: self.api_key)
+    api_key = SecureRandom.hex
+    self.api_key = Digest::SHA2.new(512).hexdigest(api_key)
+    api_key
   end
 end
