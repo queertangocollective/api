@@ -2,11 +2,11 @@ class CreateModels < ActiveRecord::Migration[5.1]
   def change
     create_table :groups do |t|
       t.text   :name,  null: false
-      t.string :email, null: false
-      t.string :hostname, null: false
-      t.string :api_key, null: false
-      t.string :timezone, null: false
-      t.string :locale, null: false
+      t.string :email
+      t.string :hostname
+      t.string :api_key
+      t.string :timezone
+      t.string :locale
 
       t.timestamps
     end
@@ -15,10 +15,11 @@ class CreateModels < ActiveRecord::Migration[5.1]
       t.belongs_to :group, index: true
 
       t.text   :name, null: false, index: true
-      t.string :email, null: false, index: true
+      t.string :email, index: true
       t.text   :biography
       t.text   :website
       t.string :role
+      t.datetime :published_at, index: true
       t.boolean :published, default: false, index: true
 
       t.timestamps
@@ -57,7 +58,7 @@ class CreateModels < ActiveRecord::Migration[5.1]
 
       t.text :description, index: true
       t.datetime :paid_at, index: true
-      t.text :paid_by, index: true
+      t.belongs_to :paid_by, index: true
       t.belongs_to :receipt
       t.integer :amount_paid
       t.integer :amount_owed
@@ -159,10 +160,17 @@ class CreateModels < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
+    create_table :authors do |t|
+      t.belongs_to :post, index: true
+      t.belongs_to :person, index: true
+
+      t.timestamps
+    end
+
     create_table :locations do |t|
       t.belongs_to :group, index: true
 
-      t.text :name
+      t.text :name, null: false
       t.text :website
       t.text :address_line
       t.text :extended_address

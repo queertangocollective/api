@@ -10,10 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171230040302) do
+ActiveRecord::Schema.define(version: 20180115191647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
+  enable_extension "fuzzystrmatch"
 
   create_table "authorization_sessions", force: :cascade do |t|
     t.bigint "authorization_id"
@@ -42,6 +44,15 @@ ActiveRecord::Schema.define(version: 20171230040302) do
     t.index ["person_id"], name: "index_authorizations_on_person_id"
   end
 
+  create_table "authors", force: :cascade do |t|
+    t.bigint "post_id"
+    t.bigint "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_authors_on_person_id"
+    t.index ["post_id"], name: "index_authors_on_post_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.bigint "group_id"
     t.text "title"
@@ -59,11 +70,11 @@ ActiveRecord::Schema.define(version: 20171230040302) do
 
   create_table "groups", force: :cascade do |t|
     t.text "name", null: false
-    t.string "email", null: false
-    t.string "hostname", null: false
-    t.string "api_key", null: false
-    t.string "timezone", null: false
-    t.string "locale", null: false
+    t.string "email"
+    t.string "hostname"
+    t.string "api_key"
+    t.string "timezone"
+    t.string "locale"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -80,7 +91,7 @@ ActiveRecord::Schema.define(version: 20171230040302) do
 
   create_table "locations", force: :cascade do |t|
     t.bigint "group_id"
-    t.text "name"
+    t.text "name", null: false
     t.text "website"
     t.text "address_line"
     t.text "extended_address"
@@ -99,10 +110,11 @@ ActiveRecord::Schema.define(version: 20171230040302) do
   create_table "people", force: :cascade do |t|
     t.bigint "group_id"
     t.text "name", null: false
-    t.string "email", null: false
+    t.string "email"
     t.text "biography"
     t.text "website"
     t.string "role"
+    t.datetime "published_at"
     t.boolean "published", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -110,6 +122,7 @@ ActiveRecord::Schema.define(version: 20171230040302) do
     t.index ["group_id"], name: "index_people_on_group_id"
     t.index ["name"], name: "index_people_on_name"
     t.index ["published"], name: "index_people_on_published"
+    t.index ["published_at"], name: "index_people_on_published_at"
   end
 
   create_table "photos", force: :cascade do |t|
@@ -196,7 +209,7 @@ ActiveRecord::Schema.define(version: 20171230040302) do
     t.bigint "group_id"
     t.text "description"
     t.datetime "paid_at"
-    t.text "paid_by"
+    t.bigint "paid_by_id"
     t.bigint "receipt_id"
     t.integer "amount_paid"
     t.integer "amount_owed"
@@ -210,7 +223,7 @@ ActiveRecord::Schema.define(version: 20171230040302) do
     t.index ["description"], name: "index_transactions_on_description"
     t.index ["group_id"], name: "index_transactions_on_group_id"
     t.index ["paid_at"], name: "index_transactions_on_paid_at"
-    t.index ["paid_by"], name: "index_transactions_on_paid_by"
+    t.index ["paid_by_id"], name: "index_transactions_on_paid_by_id"
     t.index ["receipt_id"], name: "index_transactions_on_receipt_id"
     t.index ["ticket_id"], name: "index_transactions_on_ticket_id"
   end
