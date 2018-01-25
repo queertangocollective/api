@@ -1,5 +1,5 @@
 class AuthorizationResource < ApplicationResource
-  attributes :email, :avatar, :current_sign_in_at, :last_sign_in_at
+  attributes :email, :avatar, :provider, :current_sign_in_at, :last_sign_in_at
 
   has_one :person
   has_one :group

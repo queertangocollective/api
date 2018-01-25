@@ -3,6 +3,7 @@ class PersonResource < ApplicationResource
 
   has_one :group
   has_many :photos
+  has_many :authorizations
 
   before_create do
     @model.group = context[:group]
@@ -14,7 +15,7 @@ class PersonResource < ApplicationResource
     if context[:current_user].try(:staff?)
       super
     else
-      super - [:email]
+      super - [:email, :authorizations]
     end
   end
 

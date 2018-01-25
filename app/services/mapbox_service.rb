@@ -10,11 +10,8 @@ class MapboxService
                            'Content-Type' => 'application/json'
                          }).body
 
-    feature = places['features'].find do |feature|
-      feature['context'].find { |ctx| ctx['id'].start_with?('postcode') }['text'] ==
-        location.postal_code
-    end || places['features'][0]
-
+    feature = places['features'].find { |feature| feature['place_type'].include?('postcode') } ||
+              places['features'][0]
     feature['center']
   end
 end

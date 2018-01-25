@@ -16,6 +16,7 @@ gem 'pg_search'
 
 gem 'stripe'
 gem 'jsonapi-resources', '~> 0.9.0'
+gem 'unirest'
 
 gem 'aws-sdk-v1'
 

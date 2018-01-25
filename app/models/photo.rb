@@ -1,7 +1,6 @@
 class Photo < ApplicationRecord
   belongs_to :group
 
-  before_save :nullify_blank_values
   before_destroy :remove_remote_file
 
   def cloudfront_url
