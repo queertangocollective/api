@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :authorization_sessions, except: [:show, :update]
   get 's3-direct', to: 's3_direct#get'
 
+  match '/health', via: :all, to: 'application#health_check'
   match '/404', via: :all, to: 'application#not_found'
   match '/500', via: :all, to: 'application#internal_server_error'
   match '*any', via: :all, to: 'application#not_found'

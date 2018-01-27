@@ -44,6 +44,10 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def health_check
+    head :ok
+  end
+
   def not_found
     head :not_found
   end
