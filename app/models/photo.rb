@@ -23,8 +23,8 @@ class Photo < ApplicationRecord
 
   def remove_remote_file
     if s3_key
-      s3 = AWS::S3.new
-      photo = s3.buckets[s3_bucket].objects[s3_key].delete
+      s3 = Aws::S3::Client.new
+      photo = s3.bucket(s3_bucket).object(s3_key).delete
     end
   end
 end

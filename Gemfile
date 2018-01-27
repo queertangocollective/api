@@ -18,7 +18,7 @@ gem 'stripe'
 gem 'jsonapi-resources', '~> 0.9.0'
 gem 'unirest'
 
-gem 'aws-sdk-v1'
+gem 'aws-sdk-s3'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
