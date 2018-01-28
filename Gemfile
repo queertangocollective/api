@@ -16,7 +16,7 @@ gem 'pg_search'
 
 gem 'stripe'
 gem 'jsonapi-resources', '~> 0.9.0'
-gem 'unirest'
+gem 'unirest', '~> 1.1.2'
 gem 'nokogiri', '~> 1.8.1'
 
 gem 'aws-sdk-s3'
@@ -29,7 +29,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'certified'
   gem 'dotenv-rails'
-  gem 'letter_opener'
+  gem 'letter_opener', '~> 1.6.0'
 end
 
 group :development do
