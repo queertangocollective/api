@@ -8,6 +8,8 @@ class Group < ApplicationRecord
   has_many :transactions
   has_many :tickets
   has_many :ticket_stubs
+  has_many :public_keys
+  has_many :builds
 
   def generate_api_key
     api_key = SecureRandom.hex

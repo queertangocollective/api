@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180115191647) do
+ActiveRecord::Schema.define(version: 20180128002404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,24 @@ ActiveRecord::Schema.define(version: 20180115191647) do
     t.index ["post_id"], name: "index_authors_on_post_id"
   end
 
+  create_table "builds", force: :cascade do |t|
+    t.text "notes"
+    t.text "git_url"
+    t.string "git_sha"
+    t.text "signature"
+    t.bigint "public_key_id"
+    t.bigint "group_id"
+    t.boolean "live"
+    t.datetime "live_at"
+    t.text "html"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_builds_on_group_id"
+    t.index ["live"], name: "index_builds_on_live"
+    t.index ["live_at"], name: "index_builds_on_live_at"
+    t.index ["public_key_id"], name: "index_builds_on_public_key_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.bigint "group_id"
     t.text "title"
@@ -77,6 +95,7 @@ ActiveRecord::Schema.define(version: 20180115191647) do
     t.string "locale"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "current_build_id"
   end
 
   create_table "guests", force: :cascade do |t|
@@ -163,6 +182,13 @@ ActiveRecord::Schema.define(version: 20180115191647) do
     t.index ["published_at"], name: "index_posts_on_published_at"
     t.index ["slug"], name: "index_posts_on_slug"
     t.index ["title"], name: "index_posts_on_title"
+  end
+
+  create_table "public_key", force: :cascade do |t|
+    t.string "name", limit: 191, null: false
+    t.text "key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ticket_stubs", force: :cascade do |t|
