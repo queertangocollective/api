@@ -3,7 +3,7 @@ require 'openssl'
 
 class PublicKey < ApplicationRecord
   validates :name, presence: true
-  validates :pubkey, presence: true
+  validates :key, presence: true
 
   has_many :builds
 

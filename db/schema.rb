@@ -184,7 +184,7 @@ ActiveRecord::Schema.define(version: 20180128002404) do
     t.index ["title"], name: "index_posts_on_title"
   end
 
-  create_table "public_key", force: :cascade do |t|
+  create_table "public_keys", force: :cascade do |t|
     t.string "name", limit: 191, null: false
     t.text "key", null: false
     t.datetime "created_at", null: false

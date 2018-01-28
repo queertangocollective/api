@@ -14,7 +14,7 @@ class AddBuilds < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    create_table :public_key do |t|
+    create_table :public_keys do |t|
       t.string     :name, null: false, limit: 191
       t.text       :key, null: false
 
