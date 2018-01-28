@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   jsonapi_resources :ticket_stubs
   jsonapi_resources :transactions
   jsonapi_resources :venues
+  jsonapi_resources :builds
+  jsonapi_resources :public_keys
 
   resources :purchases, only: [:create]
   resources :authorization_sessions, except: [:show, :update]

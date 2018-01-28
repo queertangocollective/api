@@ -1,3 +1,4 @@
+# coding: utf-8
 class ApplicationController < ActionController::API
   include JSONAPI::ActsAsResourceController
 
@@ -45,7 +46,7 @@ class ApplicationController < ActionController::API
   end
 
   def health_check
-    head :ok
+    render plain: '❤️'
   end
 
   def not_found
