@@ -11,6 +11,8 @@ class Group < ApplicationRecord
   has_many :public_keys
   has_many :builds
 
+  belongs_to :current_build, optional: true, class_name: 'Build'
+
   def generate_api_key
     api_key = SecureRandom.hex
     self.api_key = Digest::SHA2.new(512).hexdigest(api_key)
