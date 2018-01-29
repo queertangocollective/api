@@ -8,6 +8,13 @@ class BuildsController < ApplicationController
     group = Group.find_by_api_key(api_key)
     build = group.builds.new(create_params)
     if build.verify && build.save
+      # Activate this build
+      group.current_build.update_attributes(live: false)
+      build.live = true
+      build.live_at = DateTime.now
+      build.save
+      group.current_build = build
+      group.save
       head :ok
     else
       build.errors[:base] << 'No access - invalid SSH key' if !build.verify
