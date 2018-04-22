@@ -17,4 +17,8 @@ class LocationResource < ApplicationResource
   def self.creatable_fields(context)
     super - [:latitude, :longitude]
   end
+
+  def self.records(options={})
+    options[:context][:group].locations
+  end
 end

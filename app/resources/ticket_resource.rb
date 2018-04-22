@@ -6,8 +6,6 @@ class TicketResource < ApplicationResource
   end
 
   def self.records(options={})
-    if options[:context][:current_user].try(:staff?)
-      options[:context][:group].tickets
-    end
+    options[:context][:group].tickets
   end
 end
