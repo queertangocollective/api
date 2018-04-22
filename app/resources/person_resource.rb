@@ -37,7 +37,7 @@ class PersonResource < ApplicationResource
 
   def self.records(options={})
     if options[:context][:current_user].try(:staff?)
-      options[:context][:group].people
+      Person.where(group: options[:context][:group]).or(id: options[:context][:current_user].id)
     else
       options[:context][:group].people.published
     end
