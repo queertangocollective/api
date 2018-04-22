@@ -16,7 +16,7 @@ class ApplicationController < ActionController::API
   def current_authorization
     return @current_authorization if @current_authorization && access_token
     authorization_id = AuthorizationSession.find_by_session_id(access_token).try(:authorization_id)
-    @current_authorization = group.authorizations.find(authorization_id) if authorization_id
+    @current_authorization = Authorization.find(authorization_id) if authorization_id
   end
 
   def current_user
@@ -25,8 +25,13 @@ class ApplicationController < ActionController::API
   end
 
   def group
-    return @group if @group && api_key
-    Group.find_by_api_key(api_key)
+    return @group if @group
+
+    if current_authorization
+      @group = current_authorization.group
+    else
+      @group = Group.find_by_api_key(api_key)
+    end
   end
 
   def api_key

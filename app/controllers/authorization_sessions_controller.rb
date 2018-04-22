@@ -12,7 +12,7 @@ class AuthorizationSessionsController < ApplicationController
              authenticate_with_facebook(params)
            end
 
-    authorization = group.authorizations.from_oauth(info)
+    authorization = Authorization.from_oauth(info)
 
     if authorization
       token = SecureRandom.uuid
