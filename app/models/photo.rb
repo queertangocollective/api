@@ -12,7 +12,7 @@ class Photo < ApplicationRecord
   end
 
   def s3_bucket
-    ENV['S3_BUCKET_NAME']
+    ENV['AWS_BUCKET_NAME']
   end
 
   def s3_key
