@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   jsonapi_resources :photos
   jsonapi_resources :tickets
   jsonapi_resources :ticket_stubs
+  jsonapi_resources :ticketed_events
   jsonapi_resources :transactions
   jsonapi_resources :venues
   jsonapi_resources :builds

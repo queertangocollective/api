@@ -4,6 +4,7 @@ class Event < ApplicationRecord
   belongs_to :group
   belongs_to :venue, optional: true
   has_many :ticket_stubs
+  has_many :ticketed_events
 
   validates_presence_of :title
 

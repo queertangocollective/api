@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180128002404) do
+ActiveRecord::Schema.define(version: 2018_05_21_021642) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "fuzzystrmatch"
   enable_extension "plpgsql"
   enable_extension "unaccent"
-  enable_extension "fuzzystrmatch"
 
   create_table "authorization_sessions", force: :cascade do |t|
     t.bigint "authorization_id"
@@ -210,11 +210,11 @@ ActiveRecord::Schema.define(version: 20180128002404) do
     t.index ["ticket_id"], name: "index_ticket_stubs_on_ticket_id"
   end
 
-  create_table "ticketed_event", force: :cascade do |t|
+  create_table "ticketed_events", force: :cascade do |t|
     t.bigint "ticket_id"
     t.bigint "event_id"
-    t.index ["event_id"], name: "index_ticketed_event_on_event_id"
-    t.index ["ticket_id"], name: "index_ticketed_event_on_ticket_id"
+    t.index ["event_id"], name: "index_ticketed_events_on_event_id"
+    t.index ["ticket_id"], name: "index_ticketed_events_on_ticket_id"
   end
 
   create_table "tickets", force: :cascade do |t|
