@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_21_021642) do
+ActiveRecord::Schema.define(version: 2018_05_22_032104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -96,6 +96,8 @@ ActiveRecord::Schema.define(version: 2018_05_21_021642) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "current_build_id"
+    t.text "encrypted_stripe_publishable_key"
+    t.text "encrypted_stripe_secret_key"
   end
 
   create_table "guests", force: :cascade do |t|

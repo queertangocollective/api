@@ -1,6 +1,6 @@
 class Person < ApplicationRecord
   include PgSearch
-  pg_search_scope :search_for, against: %w(name email)
+  pg_search_scope :search_for, against: %w(name)
 
   belongs_to :group
   has_many :portraits

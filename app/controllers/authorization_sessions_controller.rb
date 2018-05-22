@@ -17,6 +17,7 @@ class AuthorizationSessionsController < ApplicationController
     if authorization
       token = SecureRandom.uuid
       authorization.update_tracked_fields(request)
+      authorization.save
       session = authorization.authorization_sessions.create(session_id: Digest::SHA2.new(512).hexdigest(token))
 
       render json: {

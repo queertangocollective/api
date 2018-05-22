@@ -9,7 +9,8 @@ class ApplicationController < ActionController::API
   def context
     {
       current_user: current_user,
-      group: group
+      group: group,
+      api_key: api_key
     }
   end
 
@@ -35,7 +36,11 @@ class ApplicationController < ActionController::API
   end
 
   def api_key
-    Digest::SHA2.new(512).hexdigest(request.headers['ApiKey'] || request.headers['Api-Key'] || '')
+    request.headers['ApiKey'] || request.headers['Api-Key'] || ''
+  end
+
+  def encrypted_api_key
+    Digest::SHA2.new(512).hexdigest(api_key)
   end
 
   def access_token
