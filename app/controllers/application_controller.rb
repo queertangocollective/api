@@ -31,7 +31,7 @@ class ApplicationController < ActionController::API
     if current_authorization
       @group = current_authorization.group
     else
-      @group = Group.find_by_api_key(api_key)
+      @group = Group.find_by_api_key(encrypted_api_key)
     end
   end
 
