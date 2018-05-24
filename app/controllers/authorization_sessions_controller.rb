@@ -5,6 +5,34 @@ class AuthorizationSessionsController < ApplicationController
   def create
     params = JSON.parse(request.body.read)
 
+    if params['provider'] == 'email'
+      authorizations = Authorization.where(email: params['email'])
+      if authorizations.count
+        authorization = authorizations.first
+        uid = SecureRandom.uuid
+        token = SecureRandom.uuid
+
+        authorization.update_attributes(
+          uid: uid,
+          provider: 'email'
+        )
+
+        session = authorization.authorization_sessions.create(
+          session_id: Digest::SHA2.new(512).hexdigest(token)
+        )
+        authorization.update_tracked_fields(request)
+        authorization.save
+
+        LoginMailer.send_magic_link(authorization, token, params['redirect-uri']).deliver!
+
+        head :ok
+      else
+        head :unauthorized
+      end
+      return
+    end
+
+
     info = case params['provider']
            when 'google'
              authenticate_with_google(params)
