@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_22_032104) do
+ActiveRecord::Schema.define(version: 2018_05_25_230243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 2018_05_22_032104) do
     t.string "session_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "activated"
+    t.datetime "expires_at"
     t.index ["authorization_id"], name: "index_authorization_sessions_on_authorization_id"
     t.index ["session_id"], name: "index_authorization_sessions_on_session_id"
   end

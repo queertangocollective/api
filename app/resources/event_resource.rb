@@ -14,11 +14,6 @@ class EventResource < ApplicationResource
 
   def self.records(options={})
     context = options[:context]
-    events = context[:group].events
-    if context[:current_user].try(:staff?)
-      events
-    else
-      events.published
-    end
+    context[:group].events
   end
 end

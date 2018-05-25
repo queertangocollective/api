@@ -5,6 +5,9 @@ class AuthorizationSessionsController < ApplicationController
   def create
     params = JSON.parse(request.body.read)
 
+    # Clean up any expired authorizations
+    AuthorizationSession.where("expires_at <= ?", Time.now).destroy_all
+
     if params['provider'] == 'email'
       authorizations = Authorization.where(email: params['email'])
       if authorizations.count
@@ -18,6 +21,8 @@ class AuthorizationSessionsController < ApplicationController
         )
 
         session = authorization.authorization_sessions.create(
+          activated: false,
+          expires_at: DateTime.now + 5.minutes,
           session_id: Digest::SHA2.new(512).hexdigest(token)
         )
         authorization.update_tracked_fields(request)
@@ -46,7 +51,11 @@ class AuthorizationSessionsController < ApplicationController
       token = SecureRandom.uuid
       authorization.update_tracked_fields(request)
       authorization.save
-      session = authorization.authorization_sessions.create(session_id: Digest::SHA2.new(512).hexdigest(token))
+      session = authorization.authorization_sessions.create(
+        activated: true,
+        expires_at: DateTime.now + 1.month + 12.hours,
+        session_id: Digest::SHA2.new(512).hexdigest(token)
+      )
 
       render json: {
                data: {
@@ -66,9 +75,20 @@ class AuthorizationSessionsController < ApplicationController
 
   def index
     token = request.headers['Access-Token']
-    session = AuthorizationSession.find_by_session_id(Digest::SHA2.new(512).hexdigest(token))
+    session = AuthorizationSession.where(
+      "session_id = ? AND expires_at > ?",
+      Digest::SHA2.new(512).hexdigest(token),
+      DateTime.now
+    ).first
 
     if session
+      unless session.activated
+        session.update_attributes(
+          activated: true,
+          expires_at: DateTime.now + 1.month + 12.hours
+        )
+      end
+
       render json: {
                data: {
                  type: 'authorization-session',
@@ -86,10 +106,11 @@ class AuthorizationSessionsController < ApplicationController
   end
 
   def destroy
-    session = AuthorizationSession.find_by_session_id(params[:id])
+    session = AuthorizationSession.find_by_session_id(
+      Digest::SHA2.new(512).hexdigest(params[:id])
+    )
     if session
-      authorization = Authorization.find(session.user_id)
-      authorization.update_tracked_fields(request)
+      session.authorization.update_tracked_fields(request)
       session.destroy
       head :no_content
     else
