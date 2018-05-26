@@ -5,7 +5,6 @@ class BuildsController < ApplicationController
 
   # Builds are verified by public keys, not authorizations
   def create
-    group = Group.find_by_api_key(api_key)
     build = group.builds.new(create_params)
     if build.verify && build.save
       # Activate this build
