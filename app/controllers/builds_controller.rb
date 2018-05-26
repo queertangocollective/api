@@ -5,7 +5,7 @@ class BuildsController < ApplicationController
 
   # Builds are verified by public keys, not authorizations
   def create
-    group = Group.find_by_api_key(api_key)
+    group = Group.find_by_api_key(params[:api_key])
     build = group.builds.new(create_params)
     if build.verify && build.save
       # Activate this build
@@ -26,10 +26,6 @@ class BuildsController < ApplicationController
   end
 
   private
-
-  def api_key
-    Digest::SHA2.new(512).hexdigest(params[:api_key])
-  end
 
   def create_params
     params.permit(:git_sha, :git_url, :html, :signature)

@@ -1,8 +1,11 @@
 class BuildResource < ApplicationResource
-  attributes :git_sha, :git_url, :live, :live_at
+  attributes :git_sha, :git_url, :live, :live_at, :deployed_by, :notes
 
-  has_one :group
-  has_one :public_key
+  belongs_to :group
+
+  def deployed_by
+    @model.public_key.name
+  end
 
   def self.records(options={})
     if options[:context][:current_user].try(:staff?)

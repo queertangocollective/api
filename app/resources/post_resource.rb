@@ -1,8 +1,17 @@
 class PostResource < ApplicationResource
   attributes :title, :body, :published, :published_at, :slug, :pinned
 
+  has_many :authors, always_include_linkage_data: true
+
   before_create do
     @model.group = context[:group]
+  end
+
+  after_create do
+    Author.create(
+      post: @model,
+      person: context[:current_user]
+    )
   end
 
   filters :pinned, :published, :slug
