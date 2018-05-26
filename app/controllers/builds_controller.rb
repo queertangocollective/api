@@ -27,7 +27,7 @@ class BuildsController < ApplicationController
   private
 
   def api_key
-    super || params[:api_key]
+    params[:api_key] || super
   end
 
   def create_params
