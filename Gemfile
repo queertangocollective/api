@@ -16,7 +16,7 @@ gem 'pg_search'
 
 gem 'stripe'
 gem 'jsonapi-resources', '~> 0.9.0'
-gem 'unirest', '~> 1.1.2'
+gem 'httparty'
 gem 'nokogiri', '~> 1.8.1'
 
 gem 'aws-sdk-s3'
