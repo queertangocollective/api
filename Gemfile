@@ -18,6 +18,7 @@ gem 'stripe'
 gem 'jsonapi-resources', '~> 0.9.0'
 gem 'httparty'
 gem 'nokogiri', '~> 1.8.1'
+gem 'sentry-raven'
 
 gem 'aws-sdk-s3'
 
