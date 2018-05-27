@@ -10,28 +10,28 @@ class GroupResource < ApplicationResource
 
   def stripe_publishable_key
     if context[:api_key] && @model.encrypted_stripe_publishable_key
-      key = ActiveSupport::KeyGenerator.new(context[:api_key]).generate_key(Rails.application.secret_key_base)
+      key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
       crypt = ActiveSupport::MessageEncryptor.new(key)
       crypt.decrypt_and_verify(@model.encrypted_stripe_publishable_key)
     end
   end
 
   def stripe_publishable_key=(publishable_key)
-    key = ActiveSupport::KeyGenerator.new(context[:api_key]).generate_key(Rails.application.secret_key_base)
+    key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
     crypt = ActiveSupport::MessageEncryptor.new(key)
     @model.encrypted_stripe_publishable_key = crypt.encrypt_and_sign(publishable_key)
   end
 
   def stripe_secret_key
     if context[:api_key] && @model.encrypted_stripe_secret_key
-      key = ActiveSupport::KeyGenerator.new(context[:api_key]).generate_key(Rails.application.secret_key_base)
+      key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
       crypt = ActiveSupport::MessageEncryptor.new(key)
       crypt.decrypt_and_verify(@model.encrypted_stripe_secret_key)
     end
   end
 
   def stripe_secret_key=(secret_key)
-    key = ActiveSupport::KeyGenerator.new(context[:api_key]).generate_key(Rails.application.secret_key_base)
+    key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
     crypt = ActiveSupport::MessageEncryptor.new(key)
     @model.encrypted_stripe_secret_key = crypt.encrypt_and_sign(secret_key)
   end
