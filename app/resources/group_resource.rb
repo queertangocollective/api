@@ -15,7 +15,7 @@ class GroupResource < ApplicationResource
   end
 
   def stripe_publishable_key=(publishable_key)
-    key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
+    key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'], 32)
     crypt = ActiveSupport::MessageEncryptor.new(key)
     @model.encrypted_stripe_publishable_key = crypt.encrypt_and_sign(publishable_key)
   end
@@ -27,7 +27,7 @@ class GroupResource < ApplicationResource
   end
 
   def stripe_secret_key=(secret_key)
-    key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
+    key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'], 32)
     crypt = ActiveSupport::MessageEncryptor.new(key)
     @model.encrypted_stripe_secret_key = crypt.encrypt_and_sign(secret_key)
   end

@@ -15,7 +15,7 @@ class Group < ApplicationRecord
 
   def stripe_publishable_key
     if encrypted_stripe_publishable_key
-      key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
+      key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'], 32)
       crypt = ActiveSupport::MessageEncryptor.new(key)
       crypt.decrypt_and_verify(encrypted_stripe_publishable_key)
     else
@@ -25,7 +25,7 @@ class Group < ApplicationRecord
 
   def stripe_secret_key
     if encrypted_stripe_secret_key
-      key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
+      key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'], 32)
       crypt = ActiveSupport::MessageEncryptor.new(key)
       crypt.decrypt_and_verify(encrypted_stripe_secret_key)
     else
