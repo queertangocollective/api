@@ -1,10 +1,10 @@
 class TicketStubResource < ApplicationResource
   attributes :attended, :role, :level, :notes
 
-  has_one :person
-  has_one :event
-  has_one :transaction
-  has_one :ticket
+  has_one :person, always_include_linkage_data: true
+  has_one :event, always_include_linkage_data: true
+  has_one :purchase, class_name: 'Transaction', always_include_linkage_data: true
+  has_one :ticket, always_include_linkage_data: true
 
   before_create do
     @model.group = context[:group]

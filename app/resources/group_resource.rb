@@ -9,10 +9,8 @@ class GroupResource < ApplicationResource
   has_one :current_build, class_name: 'Build'
 
   def stripe_publishable_key
-    if context[:api_key] && @model.encrypted_stripe_publishable_key
-      key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
-      crypt = ActiveSupport::MessageEncryptor.new(key)
-      crypt.decrypt_and_verify(@model.encrypted_stripe_publishable_key)
+    if context[:api_key]
+      @model.stripe_publishable_key
     end
   end
 
@@ -23,10 +21,8 @@ class GroupResource < ApplicationResource
   end
 
   def stripe_secret_key
-    if context[:api_key] && @model.encrypted_stripe_secret_key
-      key = ActiveSupport::KeyGenerator.new(ENV['STRIPE_SECRET']).generate_key(ENV['STRIPE_SALT'])
-      crypt = ActiveSupport::MessageEncryptor.new(key)
-      crypt.decrypt_and_verify(@model.encrypted_stripe_secret_key)
+    if context[:api_key]
+      @model.stripe_secret_key
     end
   end
 

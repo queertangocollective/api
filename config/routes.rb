@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   jsonapi_resources :builds
   jsonapi_resources :public_keys
 
-  resources :purchases, only: [:create]
+  resources :payments, only: [:create]
   resources :authorization_sessions, except: [:show, :update]
   get 's3-direct', to: 's3_direct#get'
 
