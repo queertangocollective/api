@@ -5,6 +5,8 @@ class PublicKey < ApplicationRecord
   validates :name, presence: true
   validates :key, presence: true
 
+  belongs_to :person
+  belongs_to :group
   has_many :builds
 
   def fingerprint

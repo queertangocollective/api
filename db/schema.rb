@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_25_230243) do
+ActiveRecord::Schema.define(version: 2018_05_31_024226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -193,6 +193,10 @@ ActiveRecord::Schema.define(version: 2018_05_25_230243) do
     t.text "key", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "person_id"
+    t.bigint "group_id"
+    t.index ["group_id"], name: "index_public_keys_on_group_id"
+    t.index ["person_id"], name: "index_public_keys_on_person_id"
   end
 
   create_table "ticket_stubs", force: :cascade do |t|
@@ -269,4 +273,6 @@ ActiveRecord::Schema.define(version: 2018_05_25_230243) do
     t.index ["location_id"], name: "index_venues_on_location_id"
   end
 
+  add_foreign_key "public_keys", "groups"
+  add_foreign_key "public_keys", "people"
 end

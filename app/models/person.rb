@@ -7,6 +7,7 @@ class Person < ApplicationRecord
   has_many :photos, through: :portraits
   has_many :authorizations, dependent: :destroy
   has_many :authorization_sessions, through: :authorizations
+  has_many :public_keys, dependent: :destroy
 
   scope :published, -> { where(published: true) }
 
