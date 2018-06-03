@@ -15,7 +15,7 @@ class Build < ApplicationRecord
   end
 
   def matching_public_key
-    PublicKey.all
+    group.public_keys
       .detect { |key| key.verify(self) }
       .tap { |key| self.public_key = key }
   end
