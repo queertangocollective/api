@@ -5,6 +5,7 @@ class Event < ApplicationRecord
   belongs_to :venue, optional: true
   has_many :ticket_stubs
   has_many :ticketed_events
+  has_many :guests
 
   validates_presence_of :title
 
