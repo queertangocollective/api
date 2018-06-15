@@ -4,6 +4,7 @@ class Post < ApplicationRecord
   validates_presence_of :title
 
   belongs_to :group
+  belongs_to :channel
   has_many :authors
 
   pg_search_scope :search_for, against: %w(title)

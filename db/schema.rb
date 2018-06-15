@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_31_024226) do
+ActiveRecord::Schema.define(version: 2018_06_15_163803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -73,6 +73,19 @@ ActiveRecord::Schema.define(version: 2018_05_31_024226) do
     t.index ["public_key_id"], name: "index_builds_on_public_key_id"
   end
 
+  create_table "channels", force: :cascade do |t|
+    t.bigint "group_id"
+    t.string "locale"
+    t.string "name"
+    t.string "slug"
+    t.boolean "published", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_channels_on_group_id"
+    t.index ["locale", "slug"], name: "index_channels_on_locale_and_slug", unique: true
+    t.index ["published"], name: "index_channels_on_published"
+  end
+
   create_table "events", force: :cascade do |t|
     t.bigint "group_id"
     t.text "title"
@@ -100,6 +113,7 @@ ActiveRecord::Schema.define(version: 2018_05_31_024226) do
     t.integer "current_build_id"
     t.text "encrypted_stripe_publishable_key"
     t.text "encrypted_stripe_secret_key"
+    t.text "apple_developer_merchantid_domain_association"
   end
 
   create_table "guests", force: :cascade do |t|
@@ -180,6 +194,7 @@ ActiveRecord::Schema.define(version: 2018_05_31_024226) do
     t.boolean "pinned", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "channel_id"
     t.index ["group_id"], name: "index_posts_on_group_id"
     t.index ["pinned"], name: "index_posts_on_pinned"
     t.index ["published"], name: "index_posts_on_published"

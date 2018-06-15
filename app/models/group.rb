@@ -1,5 +1,6 @@
 class Group < ApplicationRecord
   has_many :authorizations
+  has_many :channels
   has_many :people
   has_many :photos
   has_many :posts

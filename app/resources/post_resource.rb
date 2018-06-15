@@ -1,6 +1,7 @@
 class PostResource < ApplicationResource
   attributes :title, :body, :published, :published_at, :slug, :pinned
 
+  belongs_to :channel, always_include_linkage_data: true
   has_many :authors, always_include_linkage_data: true
 
   before_create do

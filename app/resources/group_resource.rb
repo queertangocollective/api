@@ -1,8 +1,9 @@
 class GroupResource < ApplicationResource
-  attributes :name, :email, :hostname, :api_key, :timezone, :locale, :stripe_publishable_key, :stripe_secret_key
+  attributes :name, :email, :hostname, :api_key, :timezone, :locale, :stripe_publishable_key, :stripe_secret_key, :apple_developer_merchantid_domain_association
 
   has_many :events
   has_many :transactions
+  has_many :channels
 
   has_many :builds
   has_many :public_keys
