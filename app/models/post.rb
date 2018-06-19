@@ -5,7 +5,7 @@ class Post < ApplicationRecord
 
   belongs_to :group
   belongs_to :channel
-  has_many :authors
+  has_many :authors, dependent: :destroy
 
   pg_search_scope :search_for, against: %w(title)
 

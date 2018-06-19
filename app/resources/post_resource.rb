@@ -26,4 +26,8 @@ class PostResource < ApplicationResource
       posts.published
     end
   end
+
+  def self.sortable_fields(context)
+    super(context) + [:"channel.name"]
+  end
 end

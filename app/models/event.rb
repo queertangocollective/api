@@ -2,10 +2,10 @@ class Event < ApplicationRecord
   include PgSearch
 
   belongs_to :group
-  belongs_to :venue, optional: true
-  has_many :ticket_stubs
-  has_many :ticketed_events
-  has_many :guests
+  belongs_to :venue, optional: true, dependent: :destroy
+  has_many :ticket_stubs, dependent: :destroy
+  has_many :ticketed_events, dependent: :destroy
+  has_many :guests, dependent: :destroy
 
   validates_presence_of :title
 

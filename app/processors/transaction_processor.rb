@@ -28,23 +28,23 @@ class TransactionProcessor < BaseProcessor
 
     currency = records.first.try(:currency)
     result.meta[:balance] = {
-      amount: records.sum(:amount_paid) - records.sum(:amount_owed),
+      amount: records.distinct.sum(:amount_paid) - records.distinct.sum(:amount_owed),
       currency: currency
     }
     result.meta[:credit] = {
-      amount: records.where('amount_paid > 0').sum(:amount_paid),
+      amount: records.where('amount_paid > 0').distinct.sum(:amount_paid),
       currency: currency
     }
     result.meta[:debit] = {
-      amount: records.where('amount_paid < 0').sum(:amount_paid),
+      amount: records.where('amount_paid < 0').distinct.sum(:amount_paid),
       currency: currency
     }
     result.meta[:settled] = {
-      amount: records.sum(:amount_paid),
+      amount: records.distinct.sum(:amount_paid),
       currency: currency
     }
     result.meta[:owed] = {
-      amount: records.sum(:amount_owed),
+      amount: records.distinct.sum(:amount_owed),
       currency: currency
     }
 

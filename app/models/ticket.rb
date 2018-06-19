@@ -2,9 +2,10 @@ class Ticket < ApplicationRecord
   include PgSearch
 
   belongs_to :group
-  has_many :ticketed_events
+  has_many :ticketed_events, dependent: :destroy
+  has_many :ticket_stubs, dependent: :destroy
+  has_many :purchases, through: :ticket_stubs
   has_many :events, through: :ticketed_events
-  has_many :ticket_stubs
 
   validates_presence_of :description, :cost, :quantity
 
