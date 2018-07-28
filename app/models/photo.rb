@@ -1,7 +1,11 @@
 class Photo < ApplicationRecord
+  include PgSearch
+
   belongs_to :group
 
   before_destroy :remove_remote_file
+
+  pg_search_scope :search_for, against: %w(filename title), using: [:tsearch, :dmetaphone], ignoring: :accents
 
   def cloudfront_url
     "https://#{ENV['CLOUDFRONT_URL']}/#{s3_key}"
