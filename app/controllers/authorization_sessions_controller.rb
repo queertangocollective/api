@@ -53,7 +53,7 @@ class AuthorizationSessionsController < ApplicationController
       authorization.save
       session = authorization.authorization_sessions.create(
         activated: true,
-        expires_at: DateTime.now + 1.month + 12.hours,
+        expires_at: DateTime.now + 1.week + 12.hours,
         session_id: Digest::SHA2.new(512).hexdigest(token)
       )
 
@@ -85,7 +85,7 @@ class AuthorizationSessionsController < ApplicationController
       unless session.activated
         session.update_attributes(
           activated: true,
-          expires_at: DateTime.now + 1.month + 12.hours
+          expires_at: DateTime.now + 1.week + 12.hours
         )
       end
 
