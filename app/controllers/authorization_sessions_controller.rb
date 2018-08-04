@@ -10,7 +10,7 @@ class AuthorizationSessionsController < ApplicationController
 
     if params['provider'] == 'email'
       authorizations = Authorization.where(email: params['email'])
-      if authorizations.count
+      if authorizations.count > 0
         authorization = authorizations.first
         uid = SecureRandom.uuid
         token = SecureRandom.uuid
