@@ -64,7 +64,11 @@ class AuthorizationSessionsController < ApplicationController
                    'id': session.id,
                    'person-id': authorization.person_id,
                    'authorization-id': authorization.id,
-                   'access-token': token
+                   'group-id': authorization.group_id,
+                   'access-token': token,
+                   'group-access': Authorization.where(email: session.authorization.email).map {|authorization|
+                     { name: authorization.group.name, id: authorization.group.id.to_s }
+                   }
                  }
                }
              }
@@ -96,13 +100,58 @@ class AuthorizationSessionsController < ApplicationController
                    'id': session.id,
                    'person-id': session.authorization.person_id,
                    'authorization-id': session.authorization_id,
-                   'access-token': token
+                   'group-id': session.authorization.group_id,
+                   'access-token': token,
+                   'group-access': Authorization.where(email: session.authorization.email).map {|authorization|
+                     { name: authorization.group.name, id: authorization.group.id.to_s }
+                   }
                  }
                }
              }
     else
       head :not_found
     end
+  end
+
+  # Exchange session for a different group
+  def update
+    token = request.headers['Access-Token']
+    old_session = AuthorizationSession.where(
+      "session_id = ? AND expires_at > ?",
+      Digest::SHA2.new(512).hexdigest(token),
+      DateTime.now
+    ).first
+    puts params
+
+    if old_session
+      authorization = Authorization.where(email: old_session.authorization.email, group_id: params[:group_id]).first
+      if authorization
+        session = authorization.authorization_sessions.create(
+          expires_at: old_session.expires_at,
+          session_id: Digest::SHA2.new(512).hexdigest(token),
+          activated: old_session.activated
+        )
+        session.authorization.update_tracked_fields(request)
+        old_session.destroy
+        render json: {
+                 data: {
+                   type: 'authorization-session',
+                   attributes: {
+                     'id': session.id,
+                     'person-id': session.authorization.person_id,
+                     'authorization-id': session.authorization_id,
+                     'group-id': session.authorization.group_id,
+                     'access-token': token,
+                     'group-access': Authorization.where(email: session.authorization.email).map {|authorization|
+                       { name: authorization.group.name, id: authorization.group.id.to_s }
+                     }
+                   }
+                 }
+               }
+        return
+      end
+    end
+    head :not_found
   end
 
   def destroy

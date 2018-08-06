@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   resources :payments, only: [:create]
   resources :pages, only: [:index]
-  resources :authorization_sessions, except: [:show, :update]
+  resources :authorization_sessions, except: [:show]
   get 's3-direct', to: 's3_direct#get'
 
   match '/health', via: :all, to: 'application#health_check'
