@@ -1,7 +1,7 @@
 class BuildResource < ApplicationResource
   attributes :git_sha, :git_url, :live, :live_at, :notes
 
-  belongs_to :group
+  has_one :group
   has_one :deployed_by, class_name: 'Person', always_include_linkage_data: true
 
   def self.records(options={})
