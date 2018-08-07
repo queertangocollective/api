@@ -23,12 +23,17 @@ class Photo < ApplicationRecord
     self.url.try(:gsub, "https://#{ENV['CLOUDFRONT_URL']}/", '')
             .try(:gsub, "https://#{s3_bucket}.s3.amazonaws.com/", '')
             .try(:gsub, '%2F', '/')
+            .try(:gsub, '+', ' ')
   end
 
   def remove_remote_file
     if s3_key
-      s3 = Aws::S3::Client.new
-      photo = s3.bucket(s3_bucket).object(s3_key).delete
+      s3 = Aws::S3::Resource.new
+      bucket = s3.bucket(s3_bucket)
+      object = bucket.object(s3_key)
+      if object.exists?
+        object.delete
+      end
     end
   end
 end
