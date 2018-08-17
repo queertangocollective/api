@@ -53,7 +53,7 @@ class AuthorizationSessionsController < ApplicationController
       authorization.save
       session = authorization.authorization_sessions.create(
         activated: true,
-        expires_at: DateTime.now + 1.week + 12.hours,
+        expires_at: DateTime.now + 1.month + 12.hours,
         session_id: Digest::SHA2.new(512).hexdigest(token)
       )
 
@@ -86,12 +86,10 @@ class AuthorizationSessionsController < ApplicationController
     ).first
 
     if session
-      unless session.activated
-        session.update_attributes(
-          activated: true,
-          expires_at: DateTime.now + 1.week + 12.hours
-        )
-      end
+      session.update_attributes(
+        activated: true,
+        expires_at: DateTime.now + 1.month + 12.hours
+      )
 
       render json: {
                data: {
@@ -127,7 +125,7 @@ class AuthorizationSessionsController < ApplicationController
       authorization = Authorization.where(email: old_session.authorization.email, group_id: params[:group_id]).first
       if authorization
         session = authorization.authorization_sessions.create(
-          expires_at: old_session.expires_at,
+          expires_at: DateTime.now + 1.month + 12.hours,
           session_id: Digest::SHA2.new(512).hexdigest(token),
           activated: old_session.activated
         )
