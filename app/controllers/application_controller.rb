@@ -58,8 +58,6 @@ class ApplicationController < ActionController::API
   def health_check
     Group.first
     render plain: '❤️'
-  rescue Error
-    render plain: '💔'
   end
 
   def not_found
