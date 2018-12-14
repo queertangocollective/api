@@ -7,9 +7,10 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: true, logger: (-> { Rails.logger }) do
   allow do
-    origins do |source, env|
-      Rails.env.development? || Group.where('hostname ~* ?', "^#{source.gsub('https://', '')}").exists?
-    end
+    origins '*'
+    #do |source, env|
+    #  Rails.env.development? || Group.where('hostname ~* ?', "^#{source.gsub('https://', '')}").exists?
+    #end
     resource '*',
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head]
