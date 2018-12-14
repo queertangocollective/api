@@ -59,7 +59,7 @@ class ApplicationController < ActionController::API
     begin
       Group.first
       render plain: '❤️'
-    rescue e =>
+    rescue e
       render plain: '💔'
     end
   end
