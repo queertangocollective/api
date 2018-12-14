@@ -5,7 +5,7 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
-Rails.application.config.middleware.insert_before 0, Rack::Cors do
+Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: true, logger: (-> { Rails.logger }) do
   allow do
     origins do |source, env|
       Rails.env.development? || Group.where('hostname ~* ?', "^#{source.gsub('https://', '')}").exists?
