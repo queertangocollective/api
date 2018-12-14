@@ -56,12 +56,10 @@ class ApplicationController < ActionController::API
   end
 
   def health_check
-    begin
-      Group.first
-      render plain: '❤️'
-    rescue e
-      render plain: '💔'
-    end
+    Group.first
+    render plain: '❤️'
+  rescue Error
+    render plain: '💔'
   end
 
   def not_found
