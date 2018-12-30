@@ -119,7 +119,6 @@ class AuthorizationSessionsController < ApplicationController
       Digest::SHA2.new(512).hexdigest(token),
       DateTime.now
     ).first
-    puts params
 
     if old_session
       authorization = Authorization.where(email: old_session.authorization.email, group_id: params[:group_id]).first

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   jsonapi_resources :tickets
   jsonapi_resources :transactions
   jsonapi_resources :venues
+  jsonapi_resources :websites
 
   resources :payments, only: [:create]
   resources :pages, only: [:index]

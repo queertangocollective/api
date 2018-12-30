@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_15_163803) do
+ActiveRecord::Schema.define(version: 2018_12_30_012623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -114,6 +114,8 @@ ActiveRecord::Schema.define(version: 2018_06_15_163803) do
     t.text "encrypted_stripe_publishable_key"
     t.text "encrypted_stripe_secret_key"
     t.text "apple_developer_merchantid_domain_association"
+    t.integer "current_website_id"
+    t.string "glitch_url"
   end
 
   create_table "guests", force: :cascade do |t|
@@ -155,6 +157,7 @@ ActiveRecord::Schema.define(version: 2018_06_15_163803) do
     t.boolean "published", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_customer_id"
     t.index ["email"], name: "index_people_on_email"
     t.index ["group_id"], name: "index_people_on_group_id"
     t.index ["name"], name: "index_people_on_name"
@@ -286,6 +289,16 @@ ActiveRecord::Schema.define(version: 2018_06_15_163803) do
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_venues_on_event_id"
     t.index ["location_id"], name: "index_venues_on_location_id"
+  end
+
+  create_table "websites", force: :cascade do |t|
+    t.bigint "group_id"
+    t.string "sha"
+    t.json "assets"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_websites_on_group_id"
+    t.index ["sha"], name: "index_websites_on_sha"
   end
 
   add_foreign_key "public_keys", "groups"

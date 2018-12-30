@@ -11,8 +11,10 @@ class Group < ApplicationRecord
   has_many :ticket_stubs
   has_many :public_keys
   has_many :builds
+  has_many :websites
 
   belongs_to :current_build, optional: true, class_name: 'Build'
+  belongs_to :current_website, optional: true, class_name: 'Website'
 
   def stripe_publishable_key
     if encrypted_stripe_publishable_key

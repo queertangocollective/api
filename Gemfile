@@ -9,6 +9,8 @@ end
 gem 'rails', '~> 5.2.0'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
+gem 'git'
+gem 'sassc'
 
 # Use postgres as the database for Active Record
 gem 'pg'

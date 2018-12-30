@@ -1,5 +1,5 @@
 class GroupResource < ApplicationResource
-  attributes :name, :email, :hostname, :api_key, :timezone, :locale, :stripe_publishable_key, :stripe_secret_key, :apple_developer_merchantid_domain_association
+  attributes :name, :email, :hostname, :api_key, :timezone, :locale, :stripe_publishable_key, :stripe_secret_key, :apple_developer_merchantid_domain_association, :glitch_url
 
   has_many :events
   has_many :transactions
@@ -8,6 +8,9 @@ class GroupResource < ApplicationResource
   has_many :builds
   has_many :public_keys
   has_one :current_build, class_name: 'Build'
+
+  has_many :websites
+  has_one :current_website, class_name: 'Website'
 
   def stripe_publishable_key
     if context[:api_key]
