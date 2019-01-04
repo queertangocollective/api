@@ -15,7 +15,7 @@ class PostResource < ApplicationResource
     )
   end
 
-  filters :pinned, :published, :slug
+  filters :pinned, :published, :slug, :channel_id
 
   def self.records(options={})
     context = options[:context]
