@@ -17,31 +17,53 @@ class WebsitesController < ApplicationController
           file: File.read("#{Dir.pwd}/#{path}")
         }
       end
-      styles = Dir.glob("public/**/*.{css,sass,scss}").map do |path|
-        {
-          path: path,
-          file: SassC::Engine.new(File.read("#{Dir.pwd}/#{path}"), style: :compressed).render
-        }
-      end
-      scripts = Dir.glob("public/**/*.js").map do |path|
-        {
-          path: path,
-          file: File.read("#{Dir.pwd}/#{path}")
-        }
-      end
 
       image_urls = []
+      css_entry_points = []
+      script_entry_points = []
 
       # Collect all images embedded into HTML
       templates.each do |template|
         doc = Nokogiri::HTML(template[:file])
         image_urls << doc.search('img').map { |image| image["src"] }
         image_urls << doc.search('link[rel="apple-touch-icon"], link[rel="shortcut"]').map { |image| image["href"] }
+
+        css_entry_points << doc.search('link[rel="stylesheet"]').map { |stylesheet| stylesheet["href"] }
+        script_entry_points << doc.search('script[src]').map { |script| script["src"] }
+      end
+
+      css_entry_points.flatten!.uniq!
+      script_entry_points.flatten!.uniq!
+      image_urls.flatten!.uniq!
+
+      sass_files = []
+      css_entry_points.each do |filename|
+        filename.gsub!(".css", "")
+        if File.exist?("#{Dir.pwd}/public#{filename}.sass")
+          sass_files << "public#{filename}.sass"
+        elsif File.exist?("#{Dir.pwd}/public#{filename}.scss")
+          sass_files << "public#{filename}.scss"
+        elsif File.exist?("#{Dir.pwd}/public#{filename}.css")
+          sass_files << "public#{filename}.css"
+        end
+      end
+
+      styles = sass_files.map do |path|
+        {
+          path: path.gsub(/.s[ac]ss$/, ".css"),
+          file: SassC::Engine.new(File.read("#{Dir.pwd}/#{path}"), style: :nested, load_paths: ["#{Dir.pwd}/public"]).render
+        }
+      end
+
+      scripts = script_entry_points.map do |path|
+        {
+          path: "public#{path}",
+          file: File.read("#{Dir.pwd}/public#{path}")
+        }
       end
 
       uploaded_urls = []
 
-      image_urls.flatten!.uniq!
       image_urls.each do |image_url|
         image = open(image_url)
         extension = File.extname(image_url.gsub(/\?\d+/, ''))
