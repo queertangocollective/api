@@ -34,7 +34,9 @@ class WebsitesController < ApplicationController
 
       css_entry_points.flatten!.uniq!
       script_entry_points.flatten!.uniq!
-      image_urls.flatten!.uniq!
+      image_urls = image_urls.flatten.uniq.select do |url|
+        url.present? && url.match('{{').nil? && url.match('}}').nil?
+      end
 
       sass_files = []
       css_entry_points.each do |filename|
