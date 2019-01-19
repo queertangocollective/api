@@ -12,7 +12,7 @@ gem 'puma', '~> 3.7'
 gem 'git'
 gem 'sassc'
 gem 'autoprefixer-rails'
-gem 'therubyracer'
+gem 'mini_racer'
 
 # Use postgres as the database for Active Record
 gem 'pg'
