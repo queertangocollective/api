@@ -51,9 +51,12 @@ class WebsitesController < ApplicationController
       end
 
       styles = sass_files.map do |path|
+        css = SassC::Engine.new(File.read("#{Dir.pwd}/#{path}"), style: :nested, load_paths: ["#{Dir.pwd}/public"]).render
+        path = path.gsub(/.s[ac]ss$/, ".css")
+        prefixed_css = AutoprefixerRails.process(css, from: path).css
         {
-          path: path.gsub(/.s[ac]ss$/, ".css"),
-          file: SassC::Engine.new(File.read("#{Dir.pwd}/#{path}"), style: :nested, load_paths: ["#{Dir.pwd}/public"]).render
+          path: path,
+          file: prefixed_css
         }
       end
 
