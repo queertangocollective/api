@@ -61,9 +61,19 @@ class WebsitesController < ApplicationController
       end
 
       scripts = script_entry_points.map do |path|
+        js = File.read("#{Dir.pwd}/public#{path}")
+        filename = path.split('/').last
+        relative_path = "#{Dir.pwd}/#{path.split('/')[0..-1].join('/')}"
+        compiled_js = Babel::Transpiler.transform(js, {
+          'sourceRoot' => "#{Dir.pwd}/public#{path}",
+          'moduleRoot' => nil,
+          'filename' => filename,
+          'filenameRelative' => relative_path
+        })
+
         {
           path: "public#{path}",
-          file: File.read("#{Dir.pwd}/public#{path}")
+          file: compiled_js['code']
         }
       end
 
