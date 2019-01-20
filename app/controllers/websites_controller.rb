@@ -60,7 +60,14 @@ class WebsitesController < ApplicationController
         }
       end
 
-      scripts = script_entry_points.map do |path|
+      js_files = []
+      script_entry_points.each do |filename|
+        if File.exist?("#{Dir.pwd}/public#{filename}")
+          js_files << "public#{filename}"
+        end
+      end
+
+      scripts = js_files.map do |path|
         js = File.read("#{Dir.pwd}/public#{path}")
         filename = path.split('/').last
         relative_path = "#{Dir.pwd}/#{path.split('/')[0..-1].join('/')}"
