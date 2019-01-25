@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   jsonapi_resources :people
   jsonapi_resources :photos
   jsonapi_resources :posts
+  jsonapi_resources :published_posts
   jsonapi_resources :public_keys
   jsonapi_resources :ticket_stubs
   jsonapi_resources :ticketed_events
@@ -18,7 +19,6 @@ Rails.application.routes.draw do
   jsonapi_resources :websites
 
   resources :payments, only: [:create]
-  resources :pages, only: [:index]
   resources :authorization_sessions, except: [:show]
   get 's3-direct', to: 's3_direct#get'
 

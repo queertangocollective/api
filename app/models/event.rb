@@ -6,6 +6,7 @@ class Event < ApplicationRecord
   has_many :ticket_stubs, dependent: :destroy
   has_many :ticketed_events, dependent: :destroy
   has_many :guests, dependent: :destroy
+  has_many :published_events, dependent: :destroy
 
   validates_presence_of :title
 

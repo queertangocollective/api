@@ -3,6 +3,7 @@ class PostResource < ApplicationResource
 
   has_one :channel, always_include_linkage_data: true
   has_many :authors, always_include_linkage_data: true
+  has_many :published_posts, always_include_linkage_data: true
 
   before_create do
     @model.group = context[:group]

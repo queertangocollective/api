@@ -3,6 +3,7 @@ class Channel < ApplicationRecord
 
   belongs_to :group
   has_many :posts
+  has_many :published_channels, dependent: :destroy
 
   validates_presence_of :name, :slug
 

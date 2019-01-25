@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_30_012623) do
+ActiveRecord::Schema.define(version: 2019_01_23_035939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -215,6 +215,84 @@ ActiveRecord::Schema.define(version: 2018_12_30_012623) do
     t.bigint "group_id"
     t.index ["group_id"], name: "index_public_keys_on_group_id"
     t.index ["person_id"], name: "index_public_keys_on_person_id"
+  end
+
+  create_table "published_channels", force: :cascade do |t|
+    t.bigint "published_post_id"
+    t.bigint "channel_id"
+    t.index ["channel_id"], name: "index_published_channels_on_channel_id"
+    t.index ["published_post_id", "channel_id"], name: "index_published_channels"
+    t.index ["published_post_id"], name: "index_published_channels_on_published_post_id"
+  end
+
+  create_table "published_events", id: false, force: :cascade do |t|
+    t.bigint "published_post_id"
+    t.bigint "event_id"
+    t.index ["event_id"], name: "index_published_events_on_event_id"
+    t.index ["published_post_id", "event_id"], name: "index_published_events"
+    t.index ["published_post_id"], name: "index_published_events_on_published_post_id"
+  end
+
+  create_table "published_locations", id: false, force: :cascade do |t|
+    t.bigint "published_post_id"
+    t.bigint "location_id"
+    t.index ["location_id"], name: "index_published_locations_on_location_id"
+    t.index ["published_post_id", "location_id"], name: "index_published_locations"
+    t.index ["published_post_id"], name: "index_published_locations_on_published_post_id"
+  end
+
+  create_table "published_people", force: :cascade do |t|
+    t.bigint "published_post_id"
+    t.bigint "person_id"
+    t.index ["person_id"], name: "index_published_people_on_person_id"
+    t.index ["published_post_id", "person_id"], name: "index_published_people"
+    t.index ["published_post_id"], name: "index_published_people_on_published_post_id"
+  end
+
+  create_table "published_photos", force: :cascade do |t|
+    t.bigint "published_post_id"
+    t.bigint "photo_id"
+    t.index ["photo_id"], name: "index_published_photos_on_photo_id"
+    t.index ["published_post_id", "photo_id"], name: "index_published_photos"
+    t.index ["published_post_id"], name: "index_published_photos_on_published_post_id"
+  end
+
+  create_table "published_posts", force: :cascade do |t|
+    t.bigint "group_id"
+    t.bigint "channel_id"
+    t.bigint "post_id"
+    t.bigint "published_by_id"
+    t.text "title"
+    t.text "body"
+    t.string "slug"
+    t.boolean "featured", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_published_posts_on_channel_id"
+    t.index ["featured"], name: "index_published_posts_on_featured"
+    t.index ["group_id"], name: "index_published_posts_on_group_id"
+    t.index ["post_id"], name: "index_published_posts_on_post_id"
+    t.index ["published_by_id"], name: "index_published_posts_on_published_by_id"
+    t.index ["slug"], name: "index_published_posts_on_slug"
+  end
+
+  create_table "published_tickets", force: :cascade do |t|
+    t.bigint "published_post_id"
+    t.bigint "ticket_id"
+    t.index ["published_post_id", "ticket_id"], name: "index_published_tickets"
+    t.index ["published_post_id"], name: "index_published_tickets_on_published_post_id"
+    t.index ["ticket_id"], name: "index_published_tickets_on_ticket_id"
+  end
+
+  create_table "redirects", force: :cascade do |t|
+    t.bigint "group_id"
+    t.string "from"
+    t.string "to"
+    t.index ["from", "to"], name: "index_redirects_on_from_and_to", unique: true
+    t.index ["from"], name: "index_redirects_on_from"
+    t.index ["group_id"], name: "index_redirects_on_group_id"
+    t.index ["to", "from"], name: "index_redirects_on_to_and_from", unique: true
+    t.index ["to"], name: "index_redirects_on_to"
   end
 
   create_table "ticket_stubs", force: :cascade do |t|

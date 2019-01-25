@@ -4,6 +4,7 @@ class Photo < ApplicationRecord
   belongs_to :group
 
   before_destroy :remove_remote_file
+  has_many :published_photos, dependent: :destroy
 
   pg_search_scope :search_for, against: %w(filename title), using: [:tsearch, :dmetaphone], ignoring: :accents
 
