@@ -10,6 +10,7 @@ class CreatePublishedPostsTable < ActiveRecord::Migration[5.2]
       t.text :body
       t.string :slug, index: true
       t.boolean :featured, index: true, default: false
+      t.boolean :live, index: true, default: false
 
       t.timestamps
     end

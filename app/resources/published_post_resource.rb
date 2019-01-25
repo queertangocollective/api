@@ -1,7 +1,7 @@
 require 'json'
 
 class PublishedPostResource < ApplicationResource
-  attributes :title, :body, :slug, :featured
+  attributes :title, :body, :slug, :featured, :live
 
   has_one :post
   has_one :channel, always_include_linkage_data: true
@@ -10,9 +10,12 @@ class PublishedPostResource < ApplicationResource
   before_create do
     @model.group = context[:group]
     @model.published_by = context[:current_user]
+    @model.live = true
   end
 
   after_create do
+    PublishedPost.where.not(id: @model.id).where(post_id: @model.post_id).update_all(live: false)
+
     # Collect and add relationships for everything embedded
     # in the post so we don't need to fetch it when we render
     # out
@@ -53,7 +56,7 @@ class PublishedPostResource < ApplicationResource
           published_post: @model
         )
       elsif card[0] == 'river'
-        channel = channel.find_by_id(card[1][:channelId])
+        channel = Channel.find_by_id(card[1][:channelId])
         PublishedChannel.create(
           channel: channel,
           published_post: @model
