@@ -60,5 +60,78 @@ class CreatePublishedPostsTable < ActiveRecord::Migration[5.2]
 
     add_index(:redirects, [:from, :to], :unique => true)
     add_index(:redirects, [:to, :from], :unique => true)
+
+    # Automatically create published posts
+    reversible do |direction|
+      direction.up do
+        posts = Post.where(published: true)
+        posts.each do |post|
+          model = PublishedPost.create(
+            group: post.group,
+            channel: post.channel,
+            post: post,
+            published_by: post.authors.last.person,
+            title: post.title,
+            body: post.body,
+            slug: post.slug,
+            featured: post.pinned,
+            live: true
+          )
+
+          # Collect and add relationships for everything embedded
+          # in the post so we don't need to fetch it when we render
+          # out
+          json = JSON.parse(model.body).with_indifferent_access
+          records = {
+            photos: [],
+            locations: [],
+            events: [],
+            channels: [],
+            people: [],
+            tickets: []
+          }
+
+          json[:cards].each do |card|
+            if card[0] == 'photo'
+              photo = Photo.find_by_id(card[1][:photoId])
+              records[:photos] << photo
+            elsif card[0] == 'gallery'
+              photos = Photo.where(id: card[1][:photoIds])
+              card[1] = photos.each do |photo|
+                records[:photos] << photo
+              end
+            elsif card[0] == 'itinerary'
+              events = Event.where(id: card[1][:eventIds])
+              card[1] = events.map do |event|
+                records[:events] << event
+              end
+            elsif card[0] == 'location'
+              location = Location.find_by_id(card[1][:locationId])
+              records[:locations] << location
+            elsif card[0] == 'person'
+              person = Person.find_by_id(card[1][:personId])
+              records[:people] << person
+            elsif card[0] == 'river'
+              channel = Channel.find_by_id(card[1][:channelId])
+              records[:channels] << channel
+            elsif card[0] == 'ticket'
+              ticket = Ticket.find_by_id(card[1][:ticketId])
+              records[:tickets] << ticket
+            end
+          end
+
+          # Loop through all records and create their relations
+          records.keys.each do |key|
+            records[key].uniq.each do |relation|
+              model_name = key.to_s.singularize.titleize
+              published_model_name = "Published#{model_name}"
+              attributes = { published_post: model }
+              attributes[model_name.underscore.to_sym] = relation
+              published_model_name.constantize.create(attributes)
+            end
+          end
+        end
+      end
+    end
   end
 end

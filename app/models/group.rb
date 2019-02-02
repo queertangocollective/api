@@ -4,6 +4,7 @@ class Group < ApplicationRecord
   has_many :people
   has_many :photos
   has_many :posts
+  has_many :published_posts
   has_many :events
   has_many :locations
   has_many :transactions
