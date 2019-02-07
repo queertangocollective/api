@@ -19,7 +19,7 @@ class PublishedPostResource < ApplicationResource
     # Collect and add relationships for everything embedded
     # in the post so we don't need to fetch it when we render
     # out
-    json = JSON.parse(@model.body).with_indifferent_access
+    json = JSON.parse(@model.body || '{ cards: [] }').with_indifferent_access
     records = {}
 
     json[:cards].each do |card|
@@ -58,7 +58,7 @@ class PublishedPostResource < ApplicationResource
         published_model_name = "Published#{model_name}"
         attributes = { published_post: @model }
         attributes[model_name.underscore.to_sym] = relation
-        class_name.constantize.create(attributes)
+        published_model_name.constantize.create(attributes)
       end
     end
   end
