@@ -14,7 +14,9 @@ class PublishedPostResource < ApplicationResource
   end
 
   after_create do
-    PublishedPost.where.not(id: @model.id).where(post_id: @model.post_id).update_all(live: false)
+    if PublishedPost.where(post_id: @model.post_id).count
+      PublishedPost.where.not(id: @model.id).where(post_id: @model.post_id).update_all(live: false)
+    end
 
     # Collect and add relationships for everything embedded
     # in the post so we don't need to fetch it when we render
