@@ -22,7 +22,14 @@ class PublishedPostResource < ApplicationResource
     # in the post so we don't need to fetch it when we render
     # out
     json = JSON.parse(@model.body || '{ cards: [] }').with_indifferent_access
-    records = {}
+    records = {
+      photos: [],
+      events: [],
+      locations: [],
+      people: [],
+      channels: [],
+      tickets: []
+    }
 
     json[:cards].each do |card|
       if card[0] == 'photo'
