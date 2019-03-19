@@ -4,7 +4,6 @@ class TransactionResource < ApplicationResource
   has_one :receipt, class_name: 'Photo', always_include_linkage_data: true
   has_one :paid_by, class_name: 'Person', always_include_linkage_data: true
   has_many :ticket_stubs
-  has_many :tickets
 
   filter :ticket_id, apply: ->(records, value, _options) {
     records.includes(:ticket_stubs).references(:ticket_stubs).where("ticket_stubs.ticket_id = ?", value)
