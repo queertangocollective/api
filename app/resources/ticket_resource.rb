@@ -17,7 +17,7 @@ class TicketResource < ApplicationResource
 
   def self.apply_sort(records, order_options, context = {})
     if order_options.has_key?('number_sold')
-      records = records.left_joins(:ticket_stubs).group(:id).order('COUNT(ticket_stubs.id)')
+      records = records.left_joins(:ticket_stubs).group(:id).order('COUNT(distinct ticket_stubs.person_id)')
       order_options.delete('number_sold')
     end
 
