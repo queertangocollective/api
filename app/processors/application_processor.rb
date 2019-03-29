@@ -1,4 +1,4 @@
-class BaseProcessor < JSONAPI::Processor
+class ApplicationProcessor < JSONAPI::Processor
   after_find do
     unless @result.is_a?(JSONAPI::ErrorsOperationResult)
       @result.meta[:page] = {

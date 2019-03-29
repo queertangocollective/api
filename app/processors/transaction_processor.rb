@@ -1,4 +1,4 @@
-class TransactionProcessor < BaseProcessor
+class TransactionProcessor < ApplicationProcessor
   def find
     filters = params[:filters]
     include_directives = params[:include_directives]
