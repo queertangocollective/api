@@ -20,7 +20,7 @@ class PostResource < ApplicationResource
 
   def self.apply_sort(records, order_options, context = {})
     if order_options.has_key?('published_at')
-      records = records.joins(:published_posts).order(:"published_at" => order_options["published_at"].to_sym)
+      records = records.includes(:published_posts).order(:"published_at" => order_options["published_at"].to_sym)
       order_options.delete('published_at')
     end
 
