@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_23_035939) do
+ActiveRecord::Schema.define(version: 2019_03_31_144836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -269,11 +269,13 @@ ActiveRecord::Schema.define(version: 2019_01_23_035939) do
     t.boolean "live", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "published_at"
     t.index ["channel_id"], name: "index_published_posts_on_channel_id"
     t.index ["featured"], name: "index_published_posts_on_featured"
     t.index ["group_id"], name: "index_published_posts_on_group_id"
     t.index ["live"], name: "index_published_posts_on_live"
     t.index ["post_id"], name: "index_published_posts_on_post_id"
+    t.index ["published_at"], name: "index_published_posts_on_published_at"
     t.index ["published_by_id"], name: "index_published_posts_on_published_by_id"
     t.index ["slug"], name: "index_published_posts_on_slug"
   end

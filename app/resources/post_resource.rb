@@ -19,12 +19,8 @@ class PostResource < ApplicationResource
   filters :pinned, :published, :slug, :channel_id
 
   def self.records(options={})
-    context = options[:context]
-    posts = context[:group].posts
-    if context[:current_user]
-      posts
-    else
-      posts.published
+    if options[:context][:current_user].try(:staff?)
+      options[:context][:group].posts
     end
   end
 

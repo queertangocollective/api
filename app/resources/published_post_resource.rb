@@ -1,7 +1,7 @@
 require 'json'
 
 class PublishedPostResource < ApplicationResource
-  attributes :title, :body, :slug, :featured, :live
+  attributes :title, :body, :published_at, :slug, :featured, :live
 
   has_one :post
   has_one :channel, always_include_linkage_data: true
@@ -17,6 +17,7 @@ class PublishedPostResource < ApplicationResource
     if PublishedPost.where(post_id: @model.post_id).count
       PublishedPost.where.not(id: @model.id).where(post_id: @model.post_id).update_all(live: false)
     end
+    @model.update_attribute(:published_at, PublishedPost.where(post_id: @model.post_id).limit(1).pluck(:published_at)[0] || DateTime.now)
 
     # Collect and add relationships for everything embedded
     # in the post so we don't need to fetch it when we render
