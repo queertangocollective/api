@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   resources :payments, only: [:create]
   resources :authorization_sessions, except: [:show]
+  get 'oembed', to: 'oembed#get'
   get 's3-direct', to: 's3_direct#get'
 
   match '/health', via: :all, to: 'application#health_check'
