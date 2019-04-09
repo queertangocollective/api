@@ -7,7 +7,11 @@ class EventResource < ApplicationResource
   has_many :guests
 
   filter :upcoming, apply: ->(records, value, _options) {
-    records.where("starts_at >= ? or ends_at >= ?", DateTime.now, DateTime.now)
+    if value[0] == 'true'
+      records.where("starts_at >= ? or ends_at >= ?", DateTime.now, DateTime.now)
+    else
+      records
+    end
   }
 
   before_create do
