@@ -53,8 +53,10 @@ class PublishedPostResource < ApplicationResource
         person = Person.find_by_id(card[1][:personId])
         records[:people] << person
       elsif card[0] == 'river'
-        channel = Channel.find_by_id(card[1][:channelId])
-        records[:channels] << channel
+        if card[1][:channelId]
+          channel = Channel.find_by_id(card[1][:channelId])
+          records[:channels] << channel
+        end
       elsif card[0] == 'ticket'
         ticket = Ticket.find_by_id(card[1][:ticketId])
         records[:tickets] << ticket
